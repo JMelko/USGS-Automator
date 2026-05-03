@@ -1,0 +1,10 @@
+# Ignore the Python environment
+venv/
+__pycache__/
+
+# Ignore data files
+data/*
+!data/**/.gitkeep
+
+# SECRETS (CRITICAL)
+.env
