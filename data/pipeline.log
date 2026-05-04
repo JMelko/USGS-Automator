@@ -1,0 +1,13 @@
+2026-05-02 19:49:29,114 - INFO - --- Starting USGS Daily ETL Pipeline ---
+2026-05-02 19:49:29,114 - INFO - Pinging USGS API for Site: 09471000
+2026-05-02 19:49:29,864 - INFO - Transforming JSON payload...
+2026-05-02 19:49:29,891 - INFO - Successfully transformed 189 records.
+2026-05-02 19:49:29,892 - INFO - Connecting to PostGIS Database...
+2026-05-02 19:49:30,381 - ERROR - Database injection failed: Not an executable object: 'DELETE FROM usgs_san_pedro_flow WHERE ctid NOT IN (SELECT max(ctid) FROM usgs_san_pedro_flow GROUP BY timestamp);'
+2026-05-02 19:57:58,074 - INFO - --- Starting USGS Daily ETL Pipeline ---
+2026-05-02 19:57:58,075 - INFO - Pinging USGS API for Site: 09471000
+2026-05-02 19:57:58,685 - INFO - Transforming JSON payload...
+2026-05-02 19:57:58,701 - INFO - Successfully transformed 189 records.
+2026-05-02 19:57:58,701 - INFO - Connecting to PostGIS Database...
+2026-05-02 19:57:58,776 - INFO - Data successfully appended to usgs_san_pedro_flow.
+2026-05-02 19:57:58,776 - INFO - --- Pipeline Execution Complete ---

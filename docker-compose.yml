@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgis:
+    image: postgis/postgis:15-3.3
+    container_name: usgs_postgis
+    environment:
+      POSTGRES_USER: env_analyst
+      POSTGRES_PASSWORD: tucson_water
+      POSTGRES_DB: usgs_water_data
+    ports:
+      - "5433:5432"
+    volumes:
+      - usgs_postgis_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  usgs_postgis_data:
