@@ -1,15 +1,15 @@
 import requests
 import pandas as pd
-from sqlalchemy import create_engine, text
 import logging
 import sys
+import os
 
 # 1. Setup Professional Logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('data/pipeline.log'), # Removed the ../
+        logging.FileHandler('data/pipeline.log'),
         logging.StreamHandler(sys.stdout)            
     ]
 )
@@ -19,7 +19,7 @@ def run_pipeline():
     
     # Extract
     site_code = "09471000"
-    days_back = 2 # In production, we only need to grab the last 48 hours to catch up
+    days_back = 2 
     url = f"https://waterservices.usgs.gov/nwis/iv/?format=json&sites={site_code}&parameterCd=00060&period=P{days_back}D"
     
     logging.info(f"Pinging USGS API for Site: {site_code}")
@@ -48,27 +48,27 @@ def run_pipeline():
         logging.error(f"Data transformation failed: {e}")
         return
 
-    # Load
-    logging.info("Connecting to PostGIS Database...")
+    # Load (The Flat File Data Lake)
+    logging.info("Writing data to local CSV Data Lake...")
     try:
-        # Connect to your isolated container
-        db_uri = 'postgresql://env_analyst:tucson_water@localhost:5433/usgs_water_data'
-        engine = create_engine(db_uri)
+        output_dir = 'data/processed'
+        os.makedirs(output_dir, exist_ok=True)
+        file_path = f"{output_dir}/san_pedro_flow.csv"
         
-        # We use 'append' now, so the database grows over time
-        table_name = 'usgs_san_pedro_flow'
-        df.to_sql(table_name, engine, if_exists='append', index=False)
+        # Check if the file already exists so we don't duplicate column headers
+        file_exists = os.path.isfile(file_path)
         
-        # Let's drop duplicate timestamps in case our 48-hour pull overlaps with yesterday
-        with engine.connect() as con:
-            # Wrap the raw string in text()
-            query = text("DELETE FROM usgs_san_pedro_flow WHERE ctid NOT IN (SELECT max(ctid) FROM usgs_san_pedro_flow GROUP BY timestamp);")
-            con.execute(query)
-            con.commit() # Explicitly save the deletion (SQLAlchemy 2.0 requirement)
-            
-        logging.info(f"Data successfully appended to {table_name}.")
+        # Append the new data
+        df.to_csv(file_path, mode='a', index=False, header=not file_exists)
+        
+        # Read the whole file, drop any overlapping duplicate timestamps, and re-save
+        full_df = pd.read_csv(file_path)
+        full_df = full_df.drop_duplicates(subset=['timestamp'], keep='last')
+        full_df.to_csv(file_path, index=False)
+        
+        logging.info(f"Data successfully appended to {file_path}. Total historical records: {len(full_df)}")
     except Exception as e:
-        logging.error(f"Database injection failed: {e}")
+        logging.error(f"CSV export failed: {e}")
         return
 
     logging.info("--- Pipeline Execution Complete ---")
