@@ -193,3 +193,10 @@
 2026-05-28 12:33:15,261 - INFO - Writing data to local CSV Data Lake...
 2026-05-28 12:33:15,271 - INFO - Data successfully appended to data/processed/san_pedro_flow.csv. Total historical records: 2468
 2026-05-28 12:33:15,271 - INFO - --- Pipeline Execution Complete ---
+2026-05-29 12:20:02,332 - INFO - --- Starting USGS Daily ETL Pipeline ---
+2026-05-29 12:20:02,332 - INFO - Pinging USGS API for Site: 09471000
+2026-05-29 12:20:03,625 - INFO - Transforming JSON payload...
+2026-05-29 12:20:03,630 - INFO - Successfully transformed 187 records.
+2026-05-29 12:20:03,630 - INFO - Writing data to local CSV Data Lake...
+2026-05-29 12:20:03,640 - INFO - Data successfully appended to data/processed/san_pedro_flow.csv. Total historical records: 2560
+2026-05-29 12:20:03,640 - INFO - --- Pipeline Execution Complete ---
