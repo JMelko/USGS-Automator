@@ -32,3 +32,56 @@
 2026-05-04 19:10:10,132 - INFO - Writing data to local CSV Data Lake...
 2026-05-04 19:10:10,138 - INFO - Data successfully appended to data/processed/san_pedro_flow.csv. Total historical records: 189
 2026-05-04 19:10:10,138 - INFO - --- Pipeline Execution Complete ---
+2026-06-10 11:02:11,741 - INFO - --- Starting USGS Regional Spatial ETL Pipeline ---
+2026-06-10 11:02:11,742 - INFO - Pinging USGS API for Regional Sites: 09470500,09471000,09471550
+2026-06-10 11:02:12,730 - INFO - Transforming JSON payload and building spatial features...
+2026-06-10 11:02:12,746 - INFO - Successfully engineered 566 spatial records.
+2026-06-10 11:02:12,746 - INFO - Opening database tunnel and executing Upsert...
+2026-06-10 11:02:12,946 - ERROR - Database load failed: 'to_postgis()' requires geoalchemy2 package.
+2026-06-10 11:14:45,869 - INFO - --- Starting USGS Regional Spatial ETL Pipeline ---
+2026-06-10 11:14:45,869 - INFO - Pinging USGS API for Regional Sites: 09470500,09471000,09471550
+2026-06-10 11:14:46,300 - INFO - Transforming JSON payload and building spatial features...
+2026-06-10 11:14:46,310 - INFO - Successfully engineered 570 spatial records.
+2026-06-10 11:14:46,311 - INFO - Opening database tunnel and executing Upsert...
+2026-06-10 11:14:46,604 - ERROR - Database load failed: (psycopg2.errors.UndefinedTable) relation "usgs_streamflow" does not exist
+LINE 2:                 INSERT INTO usgs_streamflow (site_code, stat...
+                                    ^
+
+[SQL: 
+                INSERT INTO usgs_streamflow (site_code, station_name, timestamp, discharge_cfs, geom)
+                SELECT site_code, station_name, timestamp, discharge_cfs, geom 
+                FROM temp_streamflow
+                ON CONFLICT (site_code, timestamp) DO NOTHING;
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-06-10 11:30:46,630 - INFO - --- Starting USGS Regional Spatial ETL Pipeline ---
+2026-06-10 11:30:46,630 - INFO - Pinging USGS API for Regional Sites: 09470500,09471000,09471550
+2026-06-10 11:30:47,057 - INFO - Transforming JSON payload and building spatial features...
+2026-06-10 11:30:47,068 - INFO - Successfully engineered 568 spatial records.
+2026-06-10 11:30:47,068 - INFO - Opening database tunnel and executing Upsert...
+2026-06-10 11:30:47,227 - ERROR - Database load failed: (psycopg2.errors.UndefinedColumn) column "geom" does not exist
+LINE 3: ...ECT site_code, station_name, timestamp, discharge_cfs, geom 
+                                                                  ^
+HINT:  There is a column named "geom" in table "usgs_streamflow", but it cannot be referenced from this part of the query.
+
+[SQL: 
+                INSERT INTO usgs_streamflow (site_code, station_name, timestamp, discharge_cfs, geom)
+                SELECT site_code, station_name, timestamp, discharge_cfs, geom 
+                FROM temp_streamflow
+                ON CONFLICT (site_code, timestamp) DO NOTHING;
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-06-10 14:57:42,913 - INFO - --- Starting USGS Regional Spatial ETL Pipeline ---
+2026-06-10 14:57:42,913 - INFO - Pinging USGS API for Regional Sites: 09470500,09471000,09471550
+2026-06-10 14:57:43,422 - INFO - Transforming JSON payload and building spatial features...
+2026-06-10 14:57:43,442 - INFO - Successfully engineered 569 spatial records.
+2026-06-10 14:57:43,442 - INFO - Opening database tunnel and executing Upsert...
+2026-06-10 14:57:43,765 - INFO - Database sync complete. 569 new records securely appended.
+2026-06-10 14:57:43,766 - INFO - --- Pipeline Execution Complete ---
+2026-06-10 14:57:46,185 - INFO - --- Starting USGS Regional Spatial ETL Pipeline ---
+2026-06-10 14:57:46,185 - INFO - Pinging USGS API for Regional Sites: 09470500,09471000,09471550
+2026-06-10 14:57:46,623 - INFO - Transforming JSON payload and building spatial features...
+2026-06-10 14:57:46,633 - INFO - Successfully engineered 569 spatial records.
+2026-06-10 14:57:46,634 - INFO - Opening database tunnel and executing Upsert...
+2026-06-10 14:57:46,794 - INFO - Database sync complete. 0 new records securely appended.
+2026-06-10 14:57:46,795 - INFO - --- Pipeline Execution Complete ---

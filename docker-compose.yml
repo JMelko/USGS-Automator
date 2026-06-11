@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgis:
     image: postgis/postgis:15-3.3
@@ -11,7 +9,10 @@ services:
     ports:
       - "5433:5432"
     volumes:
+      # Persistent data storage (prevents data loss if container dies)
       - usgs_postgis_data:/var/lib/postgresql/data
+      # Map our local sql folder to the container's auto-init directory
+      - ./sql:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
 volumes:
