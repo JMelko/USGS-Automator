@@ -24,14 +24,15 @@ This project is an enterprise-grade overhaul of a baseline streamflow scraper. V
    ```bash
    docker-compose up -d
    ```
+   *(Note: The `./sql/init.sql` script will automatically execute on the first boot to generate the spatial schemas and constraints).*
 
-   (Note: The ./sql/init.sql script will automatically execute on the first boot to generate the spatial schemas and constraints).
 3. Activate the virtual environment and install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    ```pip install -r requirements.txt ```
-
-Execute the daily ETL pipeline:
-
-   ```python scripts/usgs_pipeline.py ```
-
+4. Execute the daily ETL pipeline:
+   ```bash
+   python scripts/usgs_pipeline.py
+   ```
 
